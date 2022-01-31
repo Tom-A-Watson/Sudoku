@@ -22,11 +22,10 @@ public class SudokuSolver {
 
         if (isSolvable(board)) {
             System.out.println("\nSolved successfully! :D\n");
+            formatBoard();
+            return;
         }
-        else {
-            System.out.println("\nUnsolvable board :(\n");
-        }
-        formatBoard();
+        System.out.println("\nUnsolvable board :(\n");
     }
 
     /**
@@ -62,7 +61,8 @@ public class SudokuSolver {
     private static boolean isNumberInRow(int[][] board, int n, int row) {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[row][i] == n) { return true; }
+            if (board[row][i] == n)
+                return true;
         }
 
         return false;
@@ -78,7 +78,8 @@ public class SudokuSolver {
     private static boolean isNumberInColumn(int[][] board, int n, int column) {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[i][column] == n) { return true; }
+            if (board[i][column] == n)
+                return true;
         }
 
         return false;
@@ -104,7 +105,8 @@ public class SudokuSolver {
         for (int i = localBoxRow; i < localBoxRow + 3; i++) {
 
             for (int j = localBoxColumn; j < localBoxColumn + 3; j++) {
-                if (board[i][j] == n) { return true; }
+                if (board[i][j] == n)
+                    return true;
             }
         }
 
@@ -144,8 +146,9 @@ public class SudokuSolver {
                         if (isValidPlacement(board, numberToTry, row, column)) {
                             board[row][column] = numberToTry;
 
-                            if (isSolvable(board)) { return true; }
-                            else { board[row][column] = 0; }
+                            if (isSolvable(board))
+                                return true;
+                            board[row][column] = 0;
                         }
                     }
 
