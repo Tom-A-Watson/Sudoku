@@ -61,8 +61,7 @@ public class SudokuSolver {
     private static boolean isNumberInRow(int[][] board, int n, int row) {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[row][i] == n)
-                return true;
+            if (board[row][i] == n) { return true; }
         }
 
         return false;
@@ -78,8 +77,7 @@ public class SudokuSolver {
     private static boolean isNumberInColumn(int[][] board, int n, int column) {
 
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[i][column] == n)
-                return true;
+            if (board[i][column] == n) { return true; }
         }
 
         return false;
@@ -88,10 +86,10 @@ public class SudokuSolver {
     /**
      * Check if the number being tried is equal to any in its current 3 by 3 grid/box. This method requires a nested for
      * loop, as it needs to factor in the current rows AND columns in its 3 by 3 box. Since it needs to check all spots
-     * in its box, it uses the formula: 'row/column - (itself modulus 3)', which will always get the first position of
-     * any 3 by 3 box on the board. Once it has that position, the nested for loops provide a range of the local box's
-     * row column, plus 3. This allows it to loop through the entire box to try different combinations of numbers for
-     * ALL empty positions.
+     * in its box, it uses the formula: 'row/column - (row/column modulus 3)', which will always get the first position
+     * of any 3 by 3 box on the board. Once it has that position, the nested for loops provide a range of the local
+     * box's row column, plus 3. This allows it to loop through the entire box to try different combinations of numbers
+     * for ALL empty positions.
      * @param board - the 2d array representing the board
      * @param n - the number being checked in the said row & column
      * @param row - the current row
@@ -105,8 +103,7 @@ public class SudokuSolver {
         for (int i = localBoxRow; i < localBoxRow + 3; i++) {
 
             for (int j = localBoxColumn; j < localBoxColumn + 3; j++) {
-                if (board[i][j] == n)
-                    return true;
+                if (board[i][j] == n) { return true; }
             }
         }
 
@@ -122,8 +119,7 @@ public class SudokuSolver {
      * @return - true if all three methods return false. It returns false if any of the methods return true
      */
     private static boolean isValidPlacement(int[][] board, int n, int row, int column) {
-        return !isNumberInRow(board, n, row) &&
-                !isNumberInColumn(board, n, column) &&
+        return !isNumberInRow(board, n, row) && !isNumberInColumn(board, n, column) &&
                 !isNumberIn3x3(board, n, row, column);
     }
 
@@ -146,8 +142,7 @@ public class SudokuSolver {
                         if (isValidPlacement(board, numberToTry, row, column)) {
                             board[row][column] = numberToTry;
 
-                            if (isSolvable(board))
-                                return true;
+                            if (isSolvable(board)) { return true; }
                             board[row][column] = 0;
                         }
                     }
