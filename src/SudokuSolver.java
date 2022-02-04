@@ -1,3 +1,18 @@
+/**
+ * SudokuSolver - This class takes a 2d 9x9 array of ints as the unsolved board, where 0 represents a blank spot. It
+ * prints this in a more presentable way by calling formatBoard(). It then verifies if the board is solvable or not by
+ * traversing it row-by-row, checking if the number it is trying (ranging from 1 to 9) matches any in its current row,
+ * column, or 3 by 3 grid. If the three methods for checking this return false, this means there are no matching numbers
+ * in the column, row or grid, therefore it is a valid placement. Equally, if any of these methods return true, there
+ * must be a matching number in 1 of the 3 board-attributes.
+ *
+ * If the algorithm faces scenario where there are no possible valid placements in a spot, it backtracks to the previous
+ * spot and sets its value back to 0. This is because although its placement may have been valid, there could be other
+ * potential valid placements in that spot, which would fix the impossible-scenario. This entire process is done
+ * recursively until all empty spots are solved, in which case, the solved board is printed below the original, along
+ * with a message: "Solved successfully!". If it cannot place a number ranging from 1 to 9 in an empty spot, the board
+ * is determined unsolvable, and a sad print-statement follows.
+ */
 public class SudokuSolver {
 
     private static final int BOARD_SIZE = 9;
@@ -13,7 +28,7 @@ public class SudokuSolver {
 
     /**
      * Main method that prints the original board, and either the solved or unsolved board
-     * @param args - Sequence of characters from all printed Strings passed into the method
+     * @param args - Contains the array of Strings passed in from command line arguments (if there are any)
      */
     public static void main(String[] args) {
 
@@ -25,7 +40,7 @@ public class SudokuSolver {
             formatBoard();
             return;
         }
-        System.out.println("\nUnsolvable board :(\n");
+        System.out.println("\nThis board is unsolvable, sadly :(\n");
     }
 
     /**
