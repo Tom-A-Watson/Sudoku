@@ -1,50 +1,66 @@
+/**
+ * SudokuSolver - This class takes a 2d 9x9 array of ints as the unsolved board, where 0 represents a blank spot. It
+ * prints this in a more presentable way by calling formatBoard(). It then verifies if the board is solvable or not by
+ * traversing it row-by-row, checking if the number it is trying (ranging from 1 to 9) matches any in its current row,
+ * column, or 3 by 3 grid. If the three methods for checking this return false, this means there are no matching numbers
+ * in the column, row or grid, therefore it is a valid placement. Equally, if any of these methods return true, there
+ * must be a matching number in 1 of the 3 board-attributes.
+ *
+ * If the algorithm faces scenario where there are no possible valid placements in a spot, it backtracks to the previous
+ * spot and sets its value back to 0. This is because although its placement may have been valid, there could be other
+ * potential valid placements in that spot, which would fix the impossible-scenario. This entire process is done
+ * recursively until all empty spots are solved, in which case, the solved board is printed below the original, along
+ * with a message: "Solved successfully!". If it cannot place a number ranging from 1 to 9 in an empty spot, the board
+ * is determined unsolvable, and a sad print-statement follows.
+ */
 public class SudokuSolver {
 
-    private static final int BOARD_SIZE = 9;
-    private static final int[][] board = { {7, 0, 2, 0, 5, 0, 6, 0, 0},
-                                           {0, 0, 0, 0, 0, 3, 0, 0, 0},
-                                           {1, 0, 0, 0, 0, 9, 5, 0, 0},
-                                           {8, 0, 0, 0, 0, 0, 0, 9, 0},
-                                           {0, 4, 3, 0, 0, 0, 7, 5, 0},
-                                           {0, 9, 0, 0, 0, 0, 0, 0, 8},
-                                           {0, 0, 9, 7, 0, 0, 0, 0, 5},
-                                           {0, 0, 0, 2, 0, 0, 0, 0, 0},
-                                           {0, 0, 7, 0, 4, 0, 2, 0, 3} };
+    public final int BOARD_SIZE = 9;
+    private final int[][] board = { {7, 0, 2, 0, 5, 0, 6, 0, 0},
+                                    {0, 0, 0, 0, 0, 3, 0, 0, 0},
+                                    {1, 0, 0, 0, 0, 9, 5, 0, 0},
+                                    {8, 0, 0, 0, 0, 0, 0, 9, 0},
+                                    {0, 4, 3, 0, 0, 0, 7, 5, 0},
+                                    {0, 9, 0, 0, 0, 0, 0, 0, 8},
+                                    {0, 0, 9, 7, 0, 0, 0, 0, 5},
+                                    {0, 0, 0, 2, 0, 0, 0, 0, 0},
+                                    {0, 0, 7, 0, 4, 0, 2, 0, 3} };
 
     /**
      * Main method that prints the original board, and either the solved or unsolved board
-     * @param args - Sequence of characters from all printed Strings passed into the method
+     * @param args - Contains the array of Strings passed in from command line arguments (if there are any)
      */
     public static void main(String[] args) {
 
+        SudokuSolver solver = new SudokuSolver();
         System.out.println("\nOriginal board:\n");
-        formatBoard();
+        solver.formatBoard();
 
-        if (isSolvable(board)) {
+        if (solver.isSolvable(solver.getBoard())) {
             System.out.println("\nSolved successfully! :D\n");
-            formatBoard();
+            solver.formatBoard();
             return;
         }
-        System.out.println("\nUnsolvable board :(\n");
+        System.out.println("\nThis board is unsolvable, sadly :(\n");
     }
-
+    
     /**
      * Format the board in a more presentable fashion using various forms of punctuation at specified indexes
      */
-    private static void formatBoard() {
+    private void formatBoard() {
 
-        for (int row = 0; row < BOARD_SIZE; row++) {
+        for (int row = 0; row < this.BOARD_SIZE; row++) {
             if (row % 3 == 0 && row != 0) {
                 System.out.println(" |-----+-----+-----| ");
             } else if (row % 3 == 0) {
                 System.out.println(" o-----------------o ");
             }
 
-            for (int column = 0; column < BOARD_SIZE; column++) {
+            for (int column = 0; column < this.BOARD_SIZE; column++) {
                 if (column % 3 == 0) {
                     System.out.print(" | ");
                 }
-                System.out.print(SudokuSolver.board[row][column]);
+                System.out.print(this.board[row][column]);
             }
             System.out.println(" | ");
         }
@@ -58,9 +74,9 @@ public class SudokuSolver {
      * @param row - the current row
      * @return - true if the number is equal to the one being checked in the current row, false otherwise
      */
-    private static boolean isNumberInRow(int[][] board, int n, int row) {
+    private boolean isNumberInRow(int[][] board, int n, int row) {
 
-        for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int i = 0; i < this.BOARD_SIZE; i++) {
             if (board[row][i] == n) { return true; }
         }
 
@@ -74,9 +90,9 @@ public class SudokuSolver {
      * @param column - the current column
      * @return - true if the number is equal to the one being checked in the current column, false otherwise
      */
-    private static boolean isNumberInColumn(int[][] board, int n, int column) {
+    private boolean isNumberInColumn(int[][] board, int n, int column) {
 
-        for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int i = 0; i < this.BOARD_SIZE; i++) {
             if (board[i][column] == n) { return true; }
         }
 
@@ -96,7 +112,7 @@ public class SudokuSolver {
      * @param column - the current column
      * @return - true if the number is equal to the one being checked in the current 3 by 3 grid/box
      */
-    private static boolean isNumberIn3x3(int[][] board, int n, int row, int column) {
+    private boolean isNumberIn3x3(int[][] board, int n, int row, int column) {
         int localBoxRow = row - (row % 3);
         int localBoxColumn = column - (column % 3);
 
@@ -118,7 +134,7 @@ public class SudokuSolver {
      * @param column - the current column
      * @return - true if all three methods return false. It returns false if any of the methods return true
      */
-    private static boolean isValidPlacement(int[][] board, int n, int row, int column) {
+    private boolean isValidPlacement(int[][] board, int n, int row, int column) {
         return !isNumberInRow(board, n, row) && !isNumberInColumn(board, n, column) &&
                 !isNumberIn3x3(board, n, row, column);
     }
@@ -131,14 +147,14 @@ public class SudokuSolver {
      * @param board - the 2d array representing the board
      * @return - true if the provided 2d array is deemed a solvable sudoku board, false otherwise
      */
-    private static boolean isSolvable(int[][] board) {
+    private boolean isSolvable(int[][] board) {
 
-        for (int row = 0; row < BOARD_SIZE; row++) {
+        for (int row = 0; row < this.BOARD_SIZE; row++) {
 
-            for (int column = 0; column < BOARD_SIZE; column++) {
+            for (int column = 0; column < this.BOARD_SIZE; column++) {
                 if (board[row][column] == 0) {
 
-                    for (int numberToTry = 1; numberToTry <= BOARD_SIZE; numberToTry++) {
+                    for (int numberToTry = 1; numberToTry <= this.BOARD_SIZE; numberToTry++) {
                         if (isValidPlacement(board, numberToTry, row, column)) {
                             board[row][column] = numberToTry;
 
@@ -153,5 +169,21 @@ public class SudokuSolver {
         }
 
         return true;
+    }
+
+    /**
+     * Getter for the board size
+     * @return - the size of the board
+     */
+    public int getBoardSize() {
+        return this.BOARD_SIZE;
+    }
+
+    /**
+     * Getter for the given Sudoku board
+     * @return - the numbers in the given board
+     */
+    public int[][] getBoard() {
+        return board;
     }
 }
