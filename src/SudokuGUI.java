@@ -10,6 +10,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class SudokuGUI extends Application {
+
     @Override
     public void start(Stage stage) {
         mainGame(stage);
@@ -21,44 +22,50 @@ public class SudokuGUI extends Application {
         bp.setCenter(gp);
         Scene s = new Scene(bp);
         SudokuSolver solver = new SudokuSolver();
-        Button b = new Button();
+        Button b = new Button("Dark Mode");
 
-        bp.setBottom(b);
-        gp.setPrefWidth(400);
-        gp.setPrefHeight(400);
+        b.setPrefWidth(120);
+        b.setPrefHeight(40);
+        b.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
+        bp.setRight(b);
+        gp.setPrefWidth(500);
+        gp.setPrefHeight(500);
 
-        for(int i = 0; i < solver.getBoardSize(); i++) {
+        for (int i = 0; i < solver.getBoardSize(); i++) {
 
-            for(int j = 0; j < solver.getBoardSize(); j++) {
+            for (int j = 0; j < solver.getBoardSize(); j++) {
                 if (solver.getBoard()[i][j] != 0) {
-                    TextField textField = new TextField();
-
-                    textField.setMaxWidth(50);
-                    textField.setPrefHeight(50);
-                    textField.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-                    textField.setText(String.valueOf(solver.getBoard()[i][j]));
-                    textField.setAlignment(Pos.CENTER);
-                    textField.setDisable(true);
-                    gp.add(textField, i, j);
-
+                    addBoardNumbers(gp, solver, i, j);
                     continue;
                 }
 
-                TextField empty = new TextField();
-
-                empty.setMaxWidth(50);
-                empty.setPrefHeight(50);
-                empty.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-                empty.setAlignment(Pos.CENTER);
-
-                gp.add(empty, i, j);
+                TextField inputs = getEmptyTextFields();
+                gp.add(inputs, i, j);
             }
         }
 
-
-
         stage.setScene(s);
         stage.show();
+    }
+
+    private TextField getEmptyTextFields() {
+        TextField inputSquare = new TextField();
+        inputSquare.setMaxWidth(60);
+        inputSquare.setPrefHeight(60);
+        inputSquare.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
+        inputSquare.setAlignment(Pos.CENTER);
+        return inputSquare;
+    }
+
+    private void addBoardNumbers(GridPane gp, SudokuSolver solver, int i, int j) {
+        TextField boardNumber = new TextField();
+        boardNumber.setMaxWidth(60);
+        boardNumber.setPrefHeight(60);
+        boardNumber.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
+        boardNumber.setText(String.valueOf(solver.getBoard()[i][j]));
+        boardNumber.setAlignment(Pos.CENTER);
+        boardNumber.setDisable(true);
+        gp.add(boardNumber, i, j);
     }
 
 }
