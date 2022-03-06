@@ -9,6 +9,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.awt.*;
+
 public class SudokuGUI extends Application {
 
     @Override
@@ -19,15 +21,15 @@ public class SudokuGUI extends Application {
     private void mainGame(Stage stage) {
         BorderPane bp = new BorderPane();
         GridPane gp = new GridPane();
+        Button b = new Button("Solution");
         bp.setCenter(gp);
+        bp.setRight(b);
         Scene s = new Scene(bp);
         SudokuSolver solver = new SudokuSolver();
-        Button b = new Button("Dark Mode");
 
         b.setPrefWidth(120);
         b.setPrefHeight(40);
         b.setFont(Font.font("Arial", FontWeight.NORMAL, 18));
-        bp.setRight(b);
         gp.setPrefWidth(500);
         gp.setPrefHeight(500);
 
@@ -39,7 +41,7 @@ public class SudokuGUI extends Application {
                     continue;
                 }
 
-                TextField inputs = getEmptyTextFields();
+                TextField inputs = addEmptyFields();
                 gp.add(inputs, i, j);
             }
         }
@@ -48,12 +50,13 @@ public class SudokuGUI extends Application {
         stage.show();
     }
 
-    private TextField getEmptyTextFields() {
+    private TextField addEmptyFields() {
         TextField inputSquare = new TextField();
         inputSquare.setMaxWidth(60);
         inputSquare.setPrefHeight(60);
         inputSquare.setFont(Font.font("Calibri", FontWeight.BOLD, 30));
         inputSquare.setAlignment(Pos.CENTER);
+
         return inputSquare;
     }
 
